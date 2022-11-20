@@ -1,0 +1,2 @@
+#define dsl_VERSION_MAJOR @dsl_VERSION_MAJOR@
+#define dsl_VERSION_MINOR @dsl_VERSION_MINOR@
