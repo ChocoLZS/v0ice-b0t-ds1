@@ -15,6 +15,4 @@ void ProcessSilence(StepId nextStepId);
 void ProcessSpeak(std::vector<std::string> tokens, int start);
 void ProcessExit();
 void ProcessDefault(StepId nextStepId);
-std::vector<std::string> extract_branch(std::string str);
-extern std::map<StepId, Step> steps;
 }  // namespace parser

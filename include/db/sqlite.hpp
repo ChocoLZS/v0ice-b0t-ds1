@@ -1,7 +1,7 @@
 #pragma once
 #include <sqlite3.h>
 
-#include <nlohmann/json.hpp>
+#include <lib/nlohmann/json.hpp>
 #include <optional>
 using json = nlohmann::json;
 

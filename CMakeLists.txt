@@ -15,8 +15,6 @@ configure_file(DslConfig.h.in DslConfig.h)
 file(GLOB SOURCES 
     "src/*.cpp"
     "src/**/*.cpp"
-
-    "src/interpreter/*.cpp"
     # define global variables
     "src/global.cpp"
     )
@@ -24,10 +22,10 @@ file(GLOB SOURCES
 file(GLOB HEADERS
     "include/*.hpp"
     "include/**/*.hpp"
-    "include/interpreter/*.hpp"
+    "include/**/**/*.hpp"
     )
 
-add_library(argparse INTERFACE "include/argparse/argparse.hpp")
+add_library(argparse INTERFACE "include/lib/argparse/argparse.hpp")
 add_library(headers INTERFACE ${HEADERS})
 
 list(APPEND EXTRA_LIBS headers argparse)

@@ -1,11 +1,18 @@
+/**
+ * @details This function returns value by accessing the database.
+ */
 #include <stdio.h>
 
 #include <db/sqlite.hpp>
-#include <nlohmann/json.hpp>
 #include <optional>
 #include <string>
 
 namespace sqlgen {
+/**
+ * @brief Get the User object
+ * @param id The id of the user
+ * @return The user info in json format
+ */
 std::optional<json> getUser(int id) {
   sqlite3_stmt *stmt;
   sqlite3_prepare_v2(db_fd, "SELECT * FROM userinfo WHERE id = ?;", -1, &stmt,

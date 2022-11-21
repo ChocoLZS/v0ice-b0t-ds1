@@ -1,6 +1,7 @@
 #pragma once
+
+#include <lib/nlohmann/json.hpp>
 #include <map>
-#include <nlohmann/json.hpp>
 #include <optional>
 #include <stdexcept>
 #include <string>
@@ -15,6 +16,11 @@ using json = nlohmann::json;
 #define VAR 0
 #define STR 1
 
+enum class ActionType { Step, Listen, Branch, Silence, Speak, Exit, Default };
+
+/**
+ * @brief The speak item with type string | var
+ */
 class Item {
  public:
   Item(uint8_t type, std::string val) {
@@ -25,11 +31,14 @@ class Item {
   std::string val;
 };
 
+/**
+ * @brief The speak expression with a list of items
+ */
 class Expression {
  public:
   std::vector<Item> items;
   Expression(std::vector<Item> items) { this->items = items; }
-  Expression() { this->items = std::vector<Item>(); }
+  Expression() {}
   ~Expression() {
     this->items.clear();
     this->items.shrink_to_fit();
@@ -38,6 +47,9 @@ class Expression {
   void addVar(std::string var) { this->items.push_back(Item(VAR, var)); }
 };
 
+/**
+ * @brief The listener for the user input
+*/
 class Listen {
  public:
   int beginTimer;
@@ -49,6 +61,9 @@ class Listen {
   Listen() {}
 };
 
+/**
+ * @brief The step contains the speak, listen, branches, silence branch and default branch
+ */
 class Step {
  public:
   Expression speak;
@@ -58,12 +73,9 @@ class Step {
   StepId stepName;
   StepId silence;
   StepId _default_;
-  Step() = default;
+  Step(){};
   Step(StepId name) {
     this->stepName = name;
-    this->speak = Expression();
-    this->listen = Listen();
-    this->branches = std::map<Answer, StepId>();
     this->silence = "";
     this->_default_ = "";
     this->isEndStep = false;
@@ -84,13 +96,14 @@ class Step {
   void setEndStep() { this->isEndStep = true; }
 };
 
+/**
+ * @brief The script AST contains the steps
+ */
 class Script {
  public:
-  Script() {
-    this->steps = std::map<StepId, Step>();
-    this->entry = "";
-    this->vars = std::vector<VarName>();
-  }
+  StepId curStep;
+  StepId entry;
+  Script() { this->entry = ""; }
   int addStep(StepId id) {
     if (this->steps.find(id) != this->steps.end()) {
       return 1;
@@ -112,8 +125,6 @@ class Script {
     }
     return this->steps[stepId];
   }
-  StepId curStep;
-  StepId entry;
 
  private:
   std::map<StepId, Step> steps;

@@ -8,5 +8,5 @@ void initInterpreter();
 namespace executor {
 void Execute(int id);
 std::string generateSpeak(Step step, std::optional<json> userInfo);
-} // namespace executor
+}  // namespace executor
 }  // namespace interpreter

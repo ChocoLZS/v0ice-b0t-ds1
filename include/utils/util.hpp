@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include <typing/type.hpp>
 #include <vector>
 
 namespace util {
@@ -12,6 +13,6 @@ std::string getCommand(std::string &s);
 std::vector<std::string> eraceWhitespace(std::string &s);
 std::vector<std::string> split(std::string s, std::string delimiter);
 }  // namespace str
-enum class ActionType { Step, Listen, Branch, Silence, Speak, Exit, Default };
-extern std::map<std::string, util::ActionType> action_mapping;
+
+extern std::map<std::string, ActionType> action_mapping;
 }  // namespace util

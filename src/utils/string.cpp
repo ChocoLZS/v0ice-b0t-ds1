@@ -3,6 +3,12 @@
 
 namespace util {
 namespace str {
+/**
+ * @brief Trim the string
+ * @param s The string to be trimmed
+ * @param drop The characters to be trimmed
+ * @return std::string The trimmed string
+ */
 std::string &trim(std::string &s, const std::string &drop) {
   if (s.empty()) {
     return s;
@@ -14,7 +20,11 @@ std::string &trim(std::string &s, const std::string &drop) {
 std::string getCommand(std::string &s) {
   return s.substr(0, s.find_first_of(' '));
 }
-
+/**
+ * @brief Erace the whitespace in the string
+ * @param s The string to be processed
+ * @return std::vector<std::string> The vector of the tokens
+ */
 std::vector<std::string> eraceWhitespace(std::string &s) {
   std::vector<std::string> tokens;
   size_t pos = 0;
@@ -38,6 +48,12 @@ std::vector<std::string> eraceWhitespace(std::string &s) {
   }
   return tokens;
 }
+/**
+ * @brief Split the string into tokens
+ * @param s The string to be split
+ * @param delimiter The delimiter
+ * @return std::vector\\<std::string\> The vector of the tokens
+ */
 std::vector<std::string> split(std::string s, std::string delimiter) {
   std::vector<std::string> strs;
   size_t pos = 0;

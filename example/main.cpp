@@ -5,7 +5,6 @@
 int main(int argc, char *argv[]) {
   std::cout << dsl_VERSION_MAJOR << "." << dsl_VERSION_MINOR << std::endl;
   argparse::ArgumentParser program("program_name");
-
   program.add_argument("square")
     .help("display the square of a given integer")
     .scan<'i', int>();
