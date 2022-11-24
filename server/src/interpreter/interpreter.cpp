@@ -50,10 +50,10 @@ std::string generateSpeak(Step step, std::optional<json> userInfo) {
   Expression expression = step.speak;
   for (Item item : expression.items) {
     switch (item.type) {
-      case STR:
+      case (int)StrType::STR:
         speak += item.val;
         break;
-      case VAR:
+      case (int)StrType::VAR:
         if (userInfo.value().contains(std::string{item.val})) {
           if (userInfo.value()[item.val].is_string()) {
             speak += userInfo.value()[item.val];
