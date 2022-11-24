@@ -1,9 +1,15 @@
 #include <utils/logger.hpp>
 #include <utils/util.hpp>
+
+#include "DslConfig.h"
+
 namespace util {
 namespace config {
 argparse::ArgumentParser helper(int argc, char *argv[]) {
-  argparse::ArgumentParser program("dsl-client", "0.1");
+  argparse::ArgumentParser program("dsl-client",
+                                    std::to_string(CLIENT_VERSION_MAJOR) + "." +
+                                        std::to_string(CLIENT_VERSION_MINOR)
+                                   );
   program.add_argument("-s", "--server")
       .help("server address")
       .nargs(1)
@@ -39,11 +45,11 @@ argparse::ArgumentParser helper(int argc, char *argv[]) {
 }
 void serviceInit(argparse::ArgumentParser program) {
   std::string server = program.get<std::string>("-s");
-  std::string file = program.get<std::string>("-f");
+  std::string log = program.get<std::string>("-l");
   int port = program.get<unsigned short>("-p");
   bool debug = program.get<bool>("-d");
   int uid = program.get<int>("-u");
-  client::config::LOG_PATH = file;
+  client::config::LOG_PATH = log;
   client::config::SERVER_ADDRESS = server;
   client::config::PORT = port;
   client::config::DEBUG = debug;

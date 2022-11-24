@@ -14,8 +14,8 @@ namespace util {
 namespace config {
 argparse::ArgumentParser helper(int argc, char *argv[]) {
   argparse::ArgumentParser program("dsl",
-                                   std::to_string(dsl_VERSION_MAJOR) + "." +
-                                       std::to_string(dsl_VERSION_MINOR));
+                                   std::to_string(SERVER_VERSION_MAJOR) + "." +
+                                       std::to_string(SERVER_VERSION_MINOR));
   program.add_argument("-f", "--file")
       .help("path to script file")
       .nargs(1)

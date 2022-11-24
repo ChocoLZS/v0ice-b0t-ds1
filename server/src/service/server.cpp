@@ -58,6 +58,7 @@ service::response getStepInfo(rpc_conn conn, int id, std::string stepId) {
     PLOG_ERROR << e.what();
     return res;
   }
+  PLOG_DEBUG << "Current step: " << stepId;
   res.type = RES_OK;
   Step step = script.getStep(stepId);
   res.type = step.isEndStep ? RES_CLOSE : RES_INFO;
