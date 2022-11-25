@@ -1,12 +1,16 @@
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 file(GLOB SOURCES 
-    "src/*.cpp"
     "src/**/*.cpp"
     "src/global.cpp"
     )
 
-add_executable(${PROJECT_NAME}_client ${SOURCES})
+add_library(client_libs OBJECT ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME}_client ${SHARED_LIBS})
+add_executable(${PROJECT_NAME}_client src/main.cpp)
 
-target_include_directories(${PROJECT_NAME}_client PUBLIC 
-    ${PROJECT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(${PROJECT_NAME}_client PRIVATE client_libs)
+
+target_link_libraries(${PROJECT_NAME}_client PUBLIC ${SHARED_LIBS})
