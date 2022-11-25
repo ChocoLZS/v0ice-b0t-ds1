@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.14)
 
 project(dsl VERSION 1.0)
 
+OPTION(SC "build the server and client" ON)
+OPTION(TESTS "build the tests" OFF)
+
 set(SERVER_VERSION_MAJOR 1)
 set(SERVER_VERSION_MINOR 0)
 
@@ -41,5 +44,13 @@ include_directories(
 link_libraries(${Boost_LIBRARIES})
 target_compile_features(argparse INTERFACE cxx_std_17)
 
-add_subdirectory(client)
-add_subdirectory(server)
+if(SC)
+    add_subdirectory(server)
+    add_subdirectory(client)
+endif()
+
+if(TESTS)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/test)
+    add_subdirectory(test)
+endif()
+

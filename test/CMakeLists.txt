@@ -1,6 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
-
-project(test)
+set(TEST_PREFIX test)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -21,21 +19,7 @@ link_libraries(
 
 #--------------------
 
-include_directories(
-  "../thirdparty"
-  "../server/include"
-)
-file(GLOB SOURCE
-  "../server/src/parser/parser.cpp"
-)
-link_libraries(
-  ${SOURCE}
-)
+
+
 add_subdirectory(test-server-parser)
 
-# add_executable(
-#   hello_test
-#   test.cpp
-# )
-
-# gtest_discover_tests(hello_test)
