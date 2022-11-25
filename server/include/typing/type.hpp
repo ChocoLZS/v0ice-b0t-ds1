@@ -13,10 +13,7 @@ using json = nlohmann::json;
 #define Answer std::string
 #define VarName std::string
 
-enum class StrType{
-    VAR,
-    STR
-};
+enum class StrType { VAR, STR };
 
 enum class ActionType { Step, Listen, Branch, Silence, Speak, Exit, Default };
 
@@ -45,8 +42,12 @@ class Expression {
     this->items.clear();
     this->items.shrink_to_fit();
   }
-  void addTerm(std::string term) { this->items.push_back(Item((int)StrType::STR, term)); }
-  void addVar(std::string var) { this->items.push_back(Item((int)StrType::VAR, var)); }
+  void addTerm(std::string term) {
+    this->items.push_back(Item((int)StrType::STR, term));
+  }
+  void addVar(std::string var) {
+    this->items.push_back(Item((int)StrType::VAR, var));
+  }
 };
 
 /**

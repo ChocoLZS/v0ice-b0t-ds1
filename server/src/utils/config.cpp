@@ -4,6 +4,7 @@
 #include <utils/util.hpp>
 
 #include "DslConfig.h"
+extern Script script;
 /**
  * @brief The helper function to parse the command line arguments
  * @param argc The number of arguments
@@ -37,6 +38,11 @@ argparse::ArgumentParser helper(int argc, char *argv[]) {
       .nargs(0)
       .default_value(server::config::DEBUG)
       .implicit_value(true);
+  program.add_argument("--database")
+      .help("path to database file")
+      .nargs(1)
+      .default_value(server::config::DB_PATH)
+      .metavar("PATH");
   try {
     program.parse_args(argc, argv);
   } catch (const std::runtime_error &err) {
@@ -50,15 +56,19 @@ void serviceInit(argparse::ArgumentParser program) {
   int port = program.get<unsigned short>("-p");
   std::string log = program.get<std::string>("-l");
   bool debug = program.get<bool>("-d");
+  std::string database = program.get<std::string>("--database");
 
   server::config::FILE_PATH = file;
   server::config::PORT = port;
   server::config::LOG_PATH = log;
   server::config::DEBUG = debug;
+  server::config::DB_PATH = database;
   util::logger::initLogger();
   try {
     init_db();
-    parser::ParseFile(server::config::FILE_PATH);
+    Script new_script;
+    parser::ParseFile(server::config::FILE_PATH, new_script);
+    script = new_script;
   } catch (std::runtime_error &err) {
     throw err;
   }

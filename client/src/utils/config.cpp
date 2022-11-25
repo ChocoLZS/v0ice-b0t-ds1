@@ -7,9 +7,8 @@ namespace util {
 namespace config {
 argparse::ArgumentParser helper(int argc, char *argv[]) {
   argparse::ArgumentParser program("dsl-client",
-                                    std::to_string(CLIENT_VERSION_MAJOR) + "." +
-                                        std::to_string(CLIENT_VERSION_MINOR)
-                                   );
+                                   std::to_string(CLIENT_VERSION_MAJOR) + "." +
+                                       std::to_string(CLIENT_VERSION_MINOR));
   program.add_argument("-s", "--server")
       .help("server address")
       .nargs(1)

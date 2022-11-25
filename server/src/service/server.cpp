@@ -71,12 +71,12 @@ service::response getStepInfo(rpc_conn conn, int id, std::string stepId) {
   return res;
 }
 /**
-* @brief Start the rpc server, listen on the specific port.
-*/
+ * @brief Start the rpc server, listen on the specific port.
+ */
 void serverStart() {
   try {
     rpc_server server(server::config::PORT, std::thread::hardware_concurrency(),
-                    (size_t)60 * 5);
+                      (size_t)60 * 5);
     server.register_handler("hello", service::hello);
     server.register_handler("getStepInfo", service::getStepInfo);
     server.set_network_err_callback(
@@ -85,7 +85,7 @@ void serverStart() {
                      << " networking error, reason: " << reason;
         });
     server.run();
-  }catch(std::exception &e){
+  } catch (std::exception &e) {
     PLOG_ERROR << "Server start failed, reason: " << e.what();
   }
 }

@@ -16,6 +16,9 @@ include_directories(${PROJECT_BINARY_DIR})
 # c++17标准 for json std::optional
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
+# 可执行文件改到bin目录
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+
 # 共用第三方库，不需要额外配置的单文件库
 file(GLOB SHARES
     "${PROJECT_SOURCE_DIR}/thirdparty/plog/*.h"
