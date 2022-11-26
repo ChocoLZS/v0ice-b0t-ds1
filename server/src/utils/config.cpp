@@ -5,12 +5,7 @@
 
 #include "DslConfig.h"
 extern Script script;
-/**
- * @brief The helper function to parse the command line arguments
- * @param argc The number of arguments
- * @param argv The arguments
- * @return argparse::ArgumentParser The argument parser
- */
+
 namespace util {
 namespace config {
 argparse::ArgumentParser helper(int argc, char *argv[]) {
@@ -51,7 +46,9 @@ argparse::ArgumentParser helper(int argc, char *argv[]) {
   return program;
 }
 
+
 void serviceInit(argparse::ArgumentParser program) {
+  // getting the configurations
   std::string file = program.get<std::string>("-f");
   int port = program.get<unsigned short>("-p");
   std::string log = program.get<std::string>("-l");
@@ -63,11 +60,14 @@ void serviceInit(argparse::ArgumentParser program) {
   server::config::LOG_PATH = log;
   server::config::DEBUG = debug;
   server::config::DB_PATH = database;
+  // initializing
   util::logger::initLogger();
   try {
     init_db();
     Script new_script;
     parser::ParseFile(server::config::FILE_PATH, new_script);
+
+    // global variable
     script = new_script;
   } catch (std::runtime_error &err) {
     throw err;

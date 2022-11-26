@@ -1,15 +1,14 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(dsl VERSION 1.0)
+project(dsl VERSION 1.1)
 
-OPTION(SC "build the server and client" ON)
 OPTION(TESTS "build the tests" OFF)
 
 set(SERVER_VERSION_MAJOR 1)
-set(SERVER_VERSION_MINOR 0)
+set(SERVER_VERSION_MINOR 1)
 
 set(CLIENT_VERSION_MAJOR 1)
-set(CLIENT_VERSION_MINOR 0)
+set(CLIENT_VERSION_MINOR 1)
 
 configure_file(DslConfig.h.in DslConfig.h)
 
@@ -41,16 +40,14 @@ include_directories(
     "${PROJECT_SOURCE_DIR}/thirdparty"
 )
 
-link_libraries(${Boost_LIBRARIES})
 target_compile_features(argparse INTERFACE cxx_std_17)
 
-if(SC)
-    add_subdirectory(server)
-    add_subdirectory(client)
-endif()
+add_subdirectory(server)
+add_subdirectory(client)
+
 
 if(TESTS)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/test)
     add_subdirectory(test)
 endif()
+
 

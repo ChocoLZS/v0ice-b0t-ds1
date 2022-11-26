@@ -17,6 +17,8 @@ struct response {
   std::map<std::string, std::string> branches;
   MSGPACK_DEFINE(type, speak, stepId, _default_, branches);
 };
+
+
 void clientStart() {
   rpc_client client;
   client.connect(client::config::SERVER_ADDRESS, client::config::PORT);
@@ -35,6 +37,7 @@ void clientStart() {
   std::cout << printBranches(res.branches) << std::endl;
   for (;;) {
     std::string input;
+    std::cout << ">> ";
     std::cin >> input;
     std::string nextStep;
     if (res.branches.find(input) != res.branches.end()) {
@@ -63,6 +66,6 @@ std::string printBranches(std::map<std::string, std::string> branches) {
   for (auto &branch : branches) {
     result += branch.first + "\n";
   }
-  return result;
+  return result.substr(0, result.size() - 1);
 }
 };  // namespace service

@@ -4,8 +4,8 @@ add_executable(
 )
 
 target_include_directories(test_server_parser
-     PUBLIC ${CMAKE_SOURCE_DIR}/include)
+     PUBLIC ${CMAKE_SOURCE_DIR}/include  ${CMAKE_SOURCE_DIR}/server/include)
 
-target_link_libraries(test_server_parser client_libs)
+target_link_libraries(test_server_parser server_libs)
 
 gtest_discover_tests(test_server_parser)

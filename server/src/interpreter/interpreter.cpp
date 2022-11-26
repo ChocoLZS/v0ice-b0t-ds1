@@ -6,11 +6,6 @@ extern Script script;
 
 namespace interpreter {
 namespace executor {
-/**
- * @deprecated
- * @brief Execute the script by every user
- * @param id The id of the user
- */
 void Execute(int id) {
   std::optional<json> userInfo;
   try {
@@ -39,12 +34,7 @@ void Execute(int id) {
     }
   } while (true);
 }
-/**
- * @brief Generate the speak string
- * @param step The step to be spoken with its speak member
- * @param userInfo The user info, access by the variable name
- * @return The speak string
- */
+
 std::string generateSpeak(Step step, std::optional<json> userInfo) {
   std::string speak = "";
   Expression expression = step.speak;
@@ -54,6 +44,7 @@ std::string generateSpeak(Step step, std::optional<json> userInfo) {
         speak += item.val;
         break;
       case (int)StrType::VAR:
+        speak += " ";
         if (userInfo.value().contains(std::string{item.val})) {
           if (userInfo.value()[item.val].is_string()) {
             speak += userInfo.value()[item.val];

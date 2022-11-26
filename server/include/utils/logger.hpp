@@ -6,6 +6,7 @@
 
 namespace util {
 namespace logger {
+
 void initLogger();
 }
 }  // namespace util

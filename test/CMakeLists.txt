@@ -17,9 +17,12 @@ link_libraries(
   GTest::gtest_main
 )
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/test)
 #--------------------
 
-
+link_libraries(sqlite3)
 
 add_subdirectory(test-server-parser)
+add_subdirectory(test-string)
+add_subdirectory(test-server-interpreter)
 

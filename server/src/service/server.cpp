@@ -40,13 +40,7 @@ service::response hello(rpc_conn conn, int id) {
             << static_cast<std::shared_ptr<connection>>(conn)->remote_address();
   return res;
 }
-/**
- * @brief Process the user's input
- * @param conn The connection of the user
- * @param id The id of the user
- * @param stepId The next step for the request, default value is default branch
- * @return service::response The response to the client
- */
+
 service::response getStepInfo(rpc_conn conn, int id, std::string stepId) {
   PLOG_INFO << "Received a request from client: userId:" << id << "\taddress: "
             << static_cast<std::shared_ptr<connection>>(conn)->remote_address();
@@ -70,20 +64,24 @@ service::response getStepInfo(rpc_conn conn, int id, std::string stepId) {
             << static_cast<std::shared_ptr<connection>>(conn)->remote_address();
   return res;
 }
-/**
- * @brief Start the rpc server, listen on the specific port.
- */
+
 void serverStart() {
   try {
+    // listen on the port
     rpc_server server(server::config::PORT, std::thread::hardware_concurrency(),
                       (size_t)60 * 5);
+
+    // register the rpc functions
     server.register_handler("hello", service::hello);
     server.register_handler("getStepInfo", service::getStepInfo);
+
     server.set_network_err_callback(
         [](std::shared_ptr<connection> conn, std::string reason) {
           PLOG_ERROR << "remote client address: " << conn->remote_address()
                      << " networking error, reason: " << reason;
         });
+
+    // start the server
     server.run();
   } catch (std::exception &e) {
     PLOG_ERROR << "Server start failed, reason: " << e.what();

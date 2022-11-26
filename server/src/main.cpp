@@ -11,7 +11,8 @@ int main(int argc, char *argv[]) {
     std::cerr << err.what();
     std::exit(1);
   }
-  // Logger enabled.
+
+  // Init basic service like configuration ,logger and etc.
   try {
     util::config::serviceInit(program);
   } catch (const std::runtime_error &err) {

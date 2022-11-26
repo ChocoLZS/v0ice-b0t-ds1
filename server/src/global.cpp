@@ -17,9 +17,10 @@ Script script;
 
 namespace server {
 namespace config {
+
 unsigned short PORT = 9000;
 std::string FILE_PATH = "./script";
-std::string LOG_PATH = "./log";
+std::string LOG_PATH = "";
 std::string DB_PATH = "./db/dsl.db";
 bool DEBUG = false;
 

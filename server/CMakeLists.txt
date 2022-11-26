@@ -19,4 +19,9 @@ target_link_libraries(${PROJECT_NAME}_server PUBLIC ${SHARED_LIBS})
 # server sqlite3
 target_link_libraries(${PROJECT_NAME}_server LINK_PUBLIC sqlite3)
 
+target_link_libraries(${PROJECT_NAME}_server LINK_PUBLIC ${Boost_LIBRARIES})
+# for clangd to work ? maybe...
+target_include_directories(${PROJECT_NAME}_server PUBLIC 
+    ${PROJECT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 

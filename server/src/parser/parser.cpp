@@ -10,11 +10,6 @@
 #include <utils/util.hpp>
 
 namespace parser {
-/**
- * @brief Parse the script file
- * @param path The path of the script file
- * @return void
- */
 void ParseFile(std::string path,Script& script) {
   std::ifstream file(path);
   //打开文件
@@ -45,16 +40,11 @@ void ParseFile(std::string path,Script& script) {
 }
 
 std::vector<std::string> ParseLine(std::string line) {
-  return util::str::eraceWhitespace(line);
+  return util::str::eraseWhitespace(line);
 }
 
-/**
- * @brief Process the tokens
- * @param tokens The tokens to be processed
- * @return void
- */
 void ProcessTokens(std::vector<std::string> tokens,Script& script) {
-  std::string command = util::str::getCommand(tokens[0]);
+  std::string command = tokens[0];
   try {
     switch (util::action_mapping[command]) {
       case ActionType::Step:
@@ -63,7 +53,14 @@ void ProcessTokens(std::vector<std::string> tokens,Script& script) {
       case ActionType::Listen: {
         // todo: error checking
         std::vector<std::string> strs = util::str::split(tokens[1], ",");
-        ProcessListen(std::stoi(strs[0]), std::stoi(strs[1]),script);
+        if(strs.size() != 2){
+          throw std::runtime_error("The number of timer is not correct.");
+        }
+        try {
+          ProcessListen(std::stoi(strs[0]), std::stoi(strs[1]),script);
+        }catch(std::invalid_argument& err){
+          throw std::runtime_error("The timer is not a number.");
+        }
         break;
       }
       case ActionType::Branch: {
@@ -83,7 +80,7 @@ void ProcessTokens(std::vector<std::string> tokens,Script& script) {
         ProcessDefault(tokens[1],script);
         break;
       default:
-        // error
+        throw std::runtime_error("Unknown command: " + command);
         break;
     }
   } catch (std::runtime_error& err) {
@@ -91,11 +88,6 @@ void ProcessTokens(std::vector<std::string> tokens,Script& script) {
   }
 }
 
-/**
- * @brief Process the step
- * @param stepName The name of the step
- * @return void
- */
 void ProcessStep(StepId stepName,Script& script) {
   if (script.stepsCount() == 0) {
     script.entry = stepName;
@@ -130,61 +122,40 @@ Expression ProcessExpression(std::vector<std::string> tokens, int start) {
   return expression;
 }
 
-/**
- * @brief Process the speak
- * @param tokens The tokens to be processed
- * @param start The start index of the tokens
- * @return void
- */
+
 void ProcessSpeak(std::vector<std::string> tokens, int start,Script& script) {
   Step& step = script.getCurStep();
   std::string expression = "";
-  step.setExpression(ProcessExpression(tokens, start));
+  try {
+    Expression exp = ProcessExpression(tokens, start);
+    step.setExpression(exp);
+  }catch(std::runtime_error& err){
+    throw std::runtime_error(err.what());
+  }
 }
-/**
- * @brief Process the listen
- * @param beginTimer The begin timer
- * @param endTimer The end timer
- * @return void
- */
+
 void ProcessListen(int beginTimer, int endTimer,Script& script) {
   Step& step = script.getCurStep();
   Listen listen = Listen(beginTimer, endTimer);
   step.setListen(listen);
 }
-/**
- * @brief Process the branch
- * @param answer The user input answer
- * @param nextStepId The  next step id to the input answer
- * @return void
- */
+
 void ProcessBranch(Answer answer, StepId stepName,Script& script) {
   Step& step = script.getCurStep();
   step.addBranch(answer, stepName);
 }
-/**
- * @brief Process the silence
- * @param nextStepId The next step id to the silence
- * @return void
- */
+
 void ProcessSilence(StepId nextStepId,Script& script) {
   Step& step = script.getCurStep();
   step.setSilence(nextStepId);
 }
-/**
- * @brief Process the default
- * @param nextStepId The next step id to the default
- * @return void
- */
+
 void ProcessDefault(StepId nextStepId,Script& script) {
   Step& step = script.getCurStep();
   script._default_ = nextStepId;
   step.setDefault(nextStepId);
 }
-/**
- * @brief Process the exit, set this step as the exit step
- * @return void
- */
+
 void ProcessExit(Script& script) {
   Step& step = script.getCurStep();
   step.setEndStep();

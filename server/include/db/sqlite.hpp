@@ -11,5 +11,11 @@ void close_db();
 extern sqlite3 *db_fd;
 
 namespace sqlgen {
+
+/**
+* @brief Get the user's information from database
+* @param id The id of the user
+* @return std::optional<json> The user's information
+*/
 std::optional<json> getUser(int id);
 }  // namespace sqlgen

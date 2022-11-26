@@ -9,11 +9,7 @@
 #include <utils/logger.hpp>
 
 namespace sqlgen {
-/**
- * @brief Get the User object
- * @param id The id of the user
- * @return The user info in json format
- */
+
 std::optional<json> getUser(int id) {
   PLOG_DEBUG << "Getting id : " << std::to_string(id)
              << " , user info from database...";
