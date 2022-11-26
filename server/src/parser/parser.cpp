@@ -114,10 +114,13 @@ Expression ProcessExpression(std::vector<std::string> tokens, int start) {
         throw std::runtime_error("Invalid expression: " + str);
       }
       expression.addTerm(str.substr(1, str.size() - 2));
+      continue;
     }
     if (str.at(0) == '$') {
       expression.addVar(str);
+      continue;
     }
+    throw std::runtime_error("Invalid expression: " + str);
   }
   return expression;
 }
