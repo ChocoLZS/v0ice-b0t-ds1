@@ -1,5 +1,21 @@
 # 简单的语音客服 dsl
 
+<!--ts-->
+* [简单的语音客服 dsl](#简单的语音客服-dsl)
+   * [开发环境](#开发环境)
+   * [目录结构](#目录结构)
+   * [安装方法](#安装方法)
+      * [依赖库](#依赖库)
+   * [安装命令](#安装命令)
+   * [测试安装命令](#测试安装命令)
+   * [Sever](#sever)
+   * [Client](#client)
+
+<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
+<!-- Added by: chocoie, at: Sun Nov 27 12:53:17 CST 2022 -->
+
+<!--te-->
+
 ## 开发环境
 
 - 操作系统：
