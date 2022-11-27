@@ -18,7 +18,14 @@ void initResponse(int id, service::response &res,
     throw std::runtime_error("用户不存在");
   }
 }
-
+void constructResponse(service::response &res, Step step, std::optional<json> &userInfo) {
+  res.type = RES_OK;
+  res.speak = interpreter::executor::generateSpeak(step, userInfo);
+  res.stepId = step.stepName;
+  res._default_ = step._default_;
+  res.branches = step.branches;
+  res.silence = step.silence;
+}
 service::response hello(rpc_conn conn, int id) {
   PLOG_INFO << "Received a request from client: userId:" << id << "\taddress: "
             << static_cast<std::shared_ptr<connection>>(conn)->remote_address();
@@ -30,12 +37,13 @@ service::response hello(rpc_conn conn, int id) {
     PLOG_ERROR << e.what();
     return res;
   }
-  res.type = RES_OK;
   Step entry = script.getStep(script.entry);
-  res.speak = interpreter::executor::generateSpeak(entry, userInfo);
-  res.stepId = entry.stepName;
-  res._default_ = entry._default_;
-  res.branches = entry.branches;
+  constructResponse(res, entry, userInfo);
+  if (entry.listen.beginTimer != -1) {
+    res.timers.push_back(entry.listen.beginTimer);
+    res.timers.push_back(entry.listen.endTimer);
+  }
+
   PLOG_INFO << "Sending hello and welcome to userId: " << id << "\taddress: "
             << static_cast<std::shared_ptr<connection>>(conn)->remote_address();
   return res;
@@ -53,13 +61,15 @@ service::response getStepInfo(rpc_conn conn, int id, std::string stepId) {
     return res;
   }
   PLOG_DEBUG << "Current step: " << stepId;
-  res.type = RES_OK;
   Step step = script.getStep(stepId);
+
+  constructResponse(res, step, userInfo);
+  
   res.type = step.isEndStep ? RES_CLOSE : RES_INFO;
-  res.speak = interpreter::executor::generateSpeak(step, userInfo);
-  res.stepId = step.stepName;
-  res._default_ = step._default_;
-  res.branches = step.branches;
+  if(step.listen.beginTimer != -1) {
+    res.timers.push_back(step.listen.beginTimer);
+    res.timers.push_back(step.listen.endTimer);
+  }
   PLOG_INFO << "Sending response to userId: " << id << "\taddress: "
             << static_cast<std::shared_ptr<connection>>(conn)->remote_address();
   return res;

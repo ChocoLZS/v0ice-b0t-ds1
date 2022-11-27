@@ -42,6 +42,7 @@ argparse::ArgumentParser helper(int argc, char *argv[]) {
   }
   return program;
 }
+
 void serviceInit(argparse::ArgumentParser program) {
   std::string server = program.get<std::string>("-s");
   std::string log = program.get<std::string>("-l");
@@ -52,7 +53,7 @@ void serviceInit(argparse::ArgumentParser program) {
   client::config::SERVER_ADDRESS = server;
   client::config::PORT = port;
   client::config::DEBUG = debug;
-  client::config::USERID = uid;
+  client::config::USER_ID = uid;
   util::logger::initLogger();
 }
 

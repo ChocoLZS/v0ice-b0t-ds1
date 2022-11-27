@@ -32,6 +32,6 @@ extern unsigned short PORT;
 extern std::string SERVER_ADDRESS;
 extern std::string LOG_PATH;
 extern bool DEBUG;
-extern int USERID;
+extern int USER_ID;
 }  // namespace config
 }  // namespace client

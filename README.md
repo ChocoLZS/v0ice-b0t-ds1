@@ -61,6 +61,13 @@
 
 `cd ../bin`
 
+```bash
+cmake -S . -B build
+cd build
+cmake --build .
+cd ../bin
+```
+
 ```text
 $ tree
 .
@@ -78,6 +85,13 @@ $ tree
 
 `cd ../bin`
 
+```bash
+cmake -S . -B build -DTESTS=ON
+cd build
+cmake --build .
+cd ../bin
+```
+
 ```text
 $ tree
 .
@@ -91,3 +105,11 @@ $ tree
     .
     └── test_string
 ```
+
+## Sever
+
+可进入[Server](https://github.com/ChocoLZS/voice-bot-dsl/tree/main/server)目录查看README.md
+
+## Client
+
+可进入[Client](https://github.com/ChocoLZS/voice-bot-dsl/tree/main/client)目录查看README.md

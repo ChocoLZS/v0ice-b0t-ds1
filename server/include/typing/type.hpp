@@ -55,8 +55,8 @@ class Expression {
  */
 class Listen {
  public:
-  int beginTimer;
-  int endTimer;
+  int beginTimer = -1;
+  int endTimer = -1;
   Listen(int beginTimer, int endTimer) {
     this->beginTimer = beginTimer;
     this->endTimer = endTimer;
@@ -125,7 +125,7 @@ class Script {
     }
     return this->steps[stepId];
   }
-
+  std::map<StepId,Step>& getSteps() { return this->steps; }
  private:
   std::map<StepId, Step> steps;
   std::vector<VarName> vars;

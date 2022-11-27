@@ -18,6 +18,8 @@ void ParseFile(std::string path,Script& script) {
                         + " ,please check your script file.");
   }
   PLOG_DEBUG << "Parsing file: \"" << path << "\" ...";
+
+  // 解析行
   std::string line;
   while (std::getline(file, line)) {
     line = util::str::trim(line);
@@ -34,6 +36,18 @@ void ParseFile(std::string path,Script& script) {
     } catch (std::runtime_error& err) {
       PLOG_ERROR << "Failed to parse the file.";
       throw std::runtime_error(err.what());
+    }
+  }
+   
+  // 给未定义的default以及silence的Step设置默认Step
+  std::map<StepId, Step> steps = script.getSteps();
+  for (std::map<StepId,Step>::iterator it = steps.begin(); it != steps.end(); it++) {
+    Step step = it->second;
+    if (step._default_ == "") {
+      it->second._default_ = script._default_;
+    }
+    if (step.silence == "") {
+      it->second.silence = script._default_;
     }
   }
   file.close();
@@ -57,7 +71,14 @@ void ProcessTokens(std::vector<std::string> tokens,Script& script) {
           throw std::runtime_error("The number of timer is not correct.");
         }
         try {
-          ProcessListen(std::stoi(strs[0]), std::stoi(strs[1]),script);
+          int startTimer = std::stoi(strs[0]);
+          int endTimer = std::stoi(strs[1]);
+          if(startTimer > endTimer){
+            throw std::runtime_error("The start timer is larger than the end timer.");
+          }else if(startTimer < 0 || endTimer < 0){
+            throw std::runtime_error("The timer is less than 0.");
+          }
+          ProcessListen(startTimer, endTimer,script);
         }catch(std::invalid_argument& err){
           throw std::runtime_error("The timer is not a number.");
         }
@@ -94,6 +115,8 @@ void ProcessStep(StepId stepName,Script& script) {
   }
   script.addStep(stepName);
   script.curStep = stepName;
+  // 保证最后一次的Step为默任Step
+  script._default_ = stepName;
 }
 
 /**

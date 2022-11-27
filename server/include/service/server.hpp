@@ -14,8 +14,10 @@ struct response {
   std::string speak;
   std::string stepId;
   std::string _default_;
+  std::string silence;
   std::map<std::string, std::string> branches;
-  MSGPACK_DEFINE(type, speak, stepId, _default_, branches);
+  std::vector<int> timers;
+  MSGPACK_DEFINE(type, speak, stepId, _default_,silence, branches, timers);
 };
 };  // namespace service
 namespace service {
