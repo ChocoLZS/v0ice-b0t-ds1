@@ -18,7 +18,8 @@ void initResponse(int id, service::response &res,
     throw std::runtime_error("用户不存在");
   }
 }
-void constructResponse(service::response &res, Step step, std::optional<json> &userInfo) {
+void constructResponse(service::response &res, Step step,
+                       std::optional<json> &userInfo) {
   res.type = RES_OK;
   res.speak = interpreter::executor::generateSpeak(step, userInfo);
   res.stepId = step.stepName;
@@ -64,9 +65,9 @@ service::response getStepInfo(rpc_conn conn, int id, std::string stepId) {
   Step step = script.getStep(stepId);
 
   constructResponse(res, step, userInfo);
-  
+
   res.type = step.isEndStep ? RES_CLOSE : RES_INFO;
-  if(step.listen.beginTimer != -1) {
+  if (step.listen.beginTimer != -1) {
     res.timers.push_back(step.listen.beginTimer);
     res.timers.push_back(step.listen.endTimer);
   }

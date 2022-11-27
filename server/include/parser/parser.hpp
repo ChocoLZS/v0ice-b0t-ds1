@@ -14,10 +14,10 @@ namespace parser {
 void ParseFile(std::string path, Script &script);
 
 /**
-* @brief Parse the line
-* @param line The line to be parsed,splited by whitespace
-* @return std::vector<std::string> The tokens of the line
-*/
+ * @brief Parse the line
+ * @param line The line to be parsed,splited by whitespace
+ * @return std::vector<std::string> The tokens of the line
+ */
 std::vector<std::string> ParseLine(std::string line);
 
 /**
@@ -84,5 +84,5 @@ void ProcessExit(Script &script);
  * @param script The script object
  * @return void
  */
-void ProcessDefault(StepId nextStepId,Script& script);
+void ProcessDefault(StepId nextStepId, Script &script);
 }  // namespace parser

@@ -46,7 +46,6 @@ argparse::ArgumentParser helper(int argc, char *argv[]) {
   return program;
 }
 
-
 void serviceInit(argparse::ArgumentParser program) {
   // getting the configurations
   std::string file = program.get<std::string>("-f");

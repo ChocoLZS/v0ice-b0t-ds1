@@ -6,23 +6,23 @@
 namespace util {
 namespace config {
 /**
-* @brief Parses the command line arguments
-* @param argc The number of arguments
-* @param argv The arguments
-* @return argparse::ArgumentParser The arg parser
-*/
+ * @brief Parses the command line arguments
+ * @param argc The number of arguments
+ * @param argv The arguments
+ * @return argparse::ArgumentParser The arg parser
+ */
 argparse::ArgumentParser helper(int argc, char *argv[]);
 
 /**
-* @brief Initialize the basic service link setting variables ,logger and etc.
-* @param program The arg parser
-* @return void
-*/
+ * @brief Initialize the basic service link setting variables ,logger and etc.
+ * @param program The arg parser
+ * @return void
+ */
 void serviceInit(argparse::ArgumentParser program);
 
 /**
-* @brief Close the some service.
-*/
+ * @brief Close the some service.
+ */
 void serviceClose();
 }  // namespace config
 }  // namespace util

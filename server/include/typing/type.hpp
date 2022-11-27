@@ -125,7 +125,8 @@ class Script {
     }
     return this->steps[stepId];
   }
-  std::map<StepId,Step>& getSteps() { return this->steps; }
+  std::map<StepId, Step>& getSteps() { return this->steps; }
+
  private:
   std::map<StepId, Step> steps;
   std::vector<VarName> vars;

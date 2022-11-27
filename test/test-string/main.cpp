@@ -1,7 +1,8 @@
-#include <utils/util.hpp>
 #include <gtest/gtest.h>
-#include <vector>
+
 #include <string>
+#include <utils/util.hpp>
+#include <vector>
 
 TEST(server_string, test_string_split) {
   std::string str = "a,b,c,d";
@@ -19,7 +20,7 @@ TEST(server_string, test_string_trim) {
   EXPECT_EQ("a,b,c,d", result);
 }
 
-TEST(server_string,test_eraseWhitespace){
+TEST(server_string, test_eraseWhitespace) {
   std::string str = "a\tb    c   d";
   std::vector<std::string> result = util::str::eraseWhitespace(str);
   EXPECT_EQ("a", result[0]);

@@ -33,7 +33,6 @@ std::vector<std::string> eraseWhitespace(std::string &s);
 std::vector<std::string> split(std::string s, std::string delimiter);
 }  // namespace str
 
-
 extern std::map<std::string, ActionType> action_mapping;
 namespace config {
 /**
@@ -45,19 +44,19 @@ namespace config {
 argparse::ArgumentParser helper(int argc, char *argv[]);
 
 /**
-* @brief Initialize the basic service link setting variables ,initializing database ,logger and parse the script.
-* @param program The arg parser
-* @return void
-*/
+ * @brief Initialize the basic service link setting variables ,initializing
+ * database ,logger and parse the script.
+ * @param program The arg parser
+ * @return void
+ */
 void serviceInit(argparse::ArgumentParser program);
 
 /**
-* @brief Close the some service.
-*/
+ * @brief Close the some service.
+ */
 void serviceClose();
 }  // namespace config
 }  // namespace util
-
 
 namespace server {
 namespace config {

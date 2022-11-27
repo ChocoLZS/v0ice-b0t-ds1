@@ -1,6 +1,6 @@
 #!/bin/bash
-SRC_PATH="server client"
-HEADER_PATH="server client"
+SRC_PATH="server client test"
+HEADER_PATH="server client test"
 
 SRC_EXT=cpp
 HEADER_EXT=hpp

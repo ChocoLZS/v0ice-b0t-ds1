@@ -1,14 +1,14 @@
-#include "plog/Log.h"
-#include <exception>
-#include <service/client.hpp>
-#include <utils/util.hpp>
-#include <utils/logger.hpp>
-
-#include <unistd.h>
 #include <poll.h>
 #include <stdio.h>
+#include <unistd.h>
 
+#include <exception>
 #include <iostream>
+#include <service/client.hpp>
+#include <utils/logger.hpp>
+#include <utils/util.hpp>
+
+#include "plog/Log.h"
 
 using namespace rest_rpc;
 using namespace rest_rpc::rpc_service;
@@ -26,34 +26,34 @@ struct response {
   std::string silence;
   std::map<std::string, std::string> branches;
   std::vector<int> timers;
-  MSGPACK_DEFINE(type, speak, stepId, _default_ , silence, branches, timers);
+  MSGPACK_DEFINE(type, speak, stepId, _default_, silence, branches, timers);
 };
 
 // global variable to process user input
 std::string input;
 
 bool read_input() {
-    PLOG_DEBUG << "Read user input without timeout";
-    std::cout << ">> ";
-    std::cin >> input;
-    PLOG_DEBUG << "Input: " << input;
-    return true;
+  PLOG_DEBUG << "Read user input without timeout";
+  std::cout << ">> ";
+  std::cin >> input;
+  PLOG_DEBUG << "Input: " << input;
+  return true;
 }
 
 bool read_input(int beginTimer, int endTimer) {
-    std::cout << ">> " << std::flush;
-    struct pollfd _poll = {STDIN_FILENO, POLLIN | POLLPRI};
-    std::string input;
-    if (poll(&_poll, 1, (beginTimer+endTimer) * 1000)) {
-      std::cin >> input;
-    } else {
-      std::cout << "Timeout" << std::endl;
-      fflush(stdin);
-      PLOG_DEBUG << "Read user input with timeout";
-      return true;
-    }
-    PLOG_DEBUG << "Input: " << input;
-    return false;
+  std::cout << ">> " << std::flush;
+  struct pollfd _poll = {STDIN_FILENO, POLLIN | POLLPRI};
+  std::string input;
+  if (poll(&_poll, 1, (beginTimer + endTimer) * 1000)) {
+    std::cin >> input;
+  } else {
+    std::cout << "Timeout" << std::endl;
+    fflush(stdin);
+    PLOG_DEBUG << "Read user input with timeout";
+    return true;
+  }
+  PLOG_DEBUG << "Input: " << input;
+  return false;
 }
 
 void clientStart() {
@@ -72,7 +72,6 @@ void clientStart() {
   PLOG_DEBUG << "Current step is: " << res.stepId;
   std::cout << res.speak << std::endl;
   if (res.type == RES_CLOSE || res.type == RES_ERROR) {
-
     // 终止或发生错误
     PLOG_ERROR << "Something wrong.";
     goto end;
@@ -86,7 +85,7 @@ void clientStart() {
       read_input();
     } else {
       PLOG_DEBUG << "BeginTimer: " << res.timers[0] << "s"
-                  << " EndTimer: " << res.timers[1] << "s";
+                 << " EndTimer: " << res.timers[1] << "s";
       isTimeout = read_input(res.timers[0], res.timers[1]);
     }
     std::string nextStep;
@@ -114,7 +113,7 @@ void clientStart() {
       goto end;
     }
     if (res.branches.size() > 0) {
-      std::cout << printBranches(res.branches)  << std::endl;
+      std::cout << printBranches(res.branches) << std::endl;
     }
   }
 end:
