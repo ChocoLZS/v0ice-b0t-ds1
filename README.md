@@ -1,15 +1,19 @@
 # 简单的语音客服 dsl
 
 <!--ts-->
-* [简单的语音客服 dsl](#简单的语音客服-dsl)
-   * [开发环境](#开发环境)
-   * [目录结构](#目录结构)
-   * [安装方法](#安装方法)
-      * [依赖库](#依赖库)
-   * [安装命令](#安装命令)
-   * [测试安装命令](#测试安装命令)
-   * [Sever](#sever)
-   * [Client](#client)
+ * [简单的语音客服 dsl](#简单的语音客服-dsl)
+      * [开发环境](#开发环境)
+      * [目录结构](#目录结构)
+      * [安装方法](#安装方法)
+         * [依赖库](#依赖库)
+         * [安装命令](#安装命令)
+         * [测试安装命令](#测试安装命令)
+      * [使用方法](#使用方法)
+         * [服务端](#服务端)
+         * [客户端](#客户端)
+         * [数据库结构](#数据库结构)
+      * [服务端详情](#服务端详情)
+      * [客户端详情](#客户端详情)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
 <!-- Added by: chocoie, at: Sun Nov 27 12:53:17 CST 2022 -->
@@ -59,7 +63,7 @@
   - 需手动安装
   - 比如	`sudo apt install libsqlite3-dev`
 
-## 安装命令
+### 安装命令
 
 以使用g++ 和 cmake为例
 
@@ -91,7 +95,7 @@ $ tree
 └── dsl_server
 ```
 
-## 测试安装命令
+### 测试安装命令
 
 `cmake -S . -B build -DTESTS=ON`
 
@@ -122,10 +126,68 @@ $ tree
     └── test_string
 ```
 
-## Sever
+## 使用方法
+
+### 服务端
+
+```bash
+./dsl_server --help
+Usage: dsl [-h] [--file PATH] [--port PORT] [--log PATH] [--debug] [--database PATH]
+
+Optional arguments:
+  -h, --help            shows help message and exits
+  -v, --version         prints version information and exits
+  -f, --file PATH       path to script file [default: "./script"]
+  -p, --port PORT       port to listen [default: 9000]
+  -l, --log PATH        path to save log file [default: ""]
+  -d, --debug           debug mode
+  --database PATH       path to database file [default: "./db/dsl.db"]
+```
+
+不指定参数的情况下将以默认路径来执行
+
+### 客户端
+
+```bash
+./dsl_client --help
+Usage: dsl-client [-h] [--server ADDRESS] [--port PORT] [--debug] [--log PATH] [--uid UID]
+
+Optional arguments:
+  -h, --help            shows help message and exits
+  -v, --version         prints version information and exits
+  -s, --server ADDRESS  server address [default: "127.0.0.1"]
+  -p, --port PORT       port to server [default: 9000]
+  -d, --debug           show log debug info,if log mode open
+  -l, --log PATH        path to save log file, empty for no log [default: ""]
+  -u, --uid UID         user id
+```
+
+### 数据库结构
+
+**userinfo**
+
+| 名称   | 类型         | 含义                     |
+| ------ | ------------ | ------------------------ |
+| id     | int          | 用户id，唯一识别用户信息 |
+| name   | varchar(64)  | 用户姓名                 |
+| amount | int          | 用户帐单                 |
+| credit | int          | 用户话费                 |
+| data   | varchar(255) | 用户信息                 |
+
+```sql
+create table userinfo(
+    id int primary key,
+    name varchar(64),
+    amount int,
+    credit int,
+    data varchar(255)
+)
+```
+
+## 服务端详情
 
 可进入[Server](https://github.com/ChocoLZS/voice-bot-dsl/tree/main/server)目录查看README.md
 
-## Client
+## 客户端详情
 
 可进入[Client](https://github.com/ChocoLZS/voice-bot-dsl/tree/main/client)目录查看README.md
