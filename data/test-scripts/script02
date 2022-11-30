@@ -1,0 +1,19 @@
+Step main   # 入口步骤
+    Speak "hello" + "world"
+    Branch "账单" , bill
+    Listen 10 , 30
+    Silence silence
+    Default default
+Step silence
+    Speak "您好，我没听清楚您说的是什么？"
+
+Step bill
+    Speak $name + ",您好，您的账单是：" + $amount
+    Branch "查询话费" , searchCredit
+    # 测试未包含的分支
+    Branch "查询信息" , searchData
+    Listen 10 , 30
+Step default
+    Speak "请问您还有什么需要补充的吗？"
+    Branch "账单" , bill
+

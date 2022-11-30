@@ -8,7 +8,6 @@
 #include <utils/logger.hpp>
 #include <utils/util.hpp>
 
-#include "plog/Log.h"
 
 using namespace rest_rpc;
 using namespace rest_rpc::rpc_service;
@@ -43,16 +42,12 @@ bool read_input() {
 bool read_input(int beginTimer, int endTimer) {
   std::cout << ">> " << std::flush;
   struct pollfd _poll = {STDIN_FILENO, POLLIN | POLLPRI};
-  std::string input;
   if (poll(&_poll, 1, (beginTimer + endTimer) * 1000)) {
     std::cin >> input;
   } else {
-    std::cout << "Timeout" << std::endl;
-    fflush(stdin);
     PLOG_DEBUG << "Read user input with timeout";
     return true;
   }
-  PLOG_DEBUG << "Input: " << input;
   return false;
 }
 
@@ -90,6 +85,7 @@ void clientStart() {
     }
     std::string nextStep;
     PLOG_DEBUG << "Timeout flag is " << isTimeout;
+    PLOG_DEBUG << "Input is " << input;
     if (isTimeout) {
       // 超时，跳转silence分支
       nextStep = res.silence;
@@ -102,13 +98,13 @@ void clientStart() {
         nextStep = res._default_;
       }
     }
-
+    PLOG_DEBUG << "Next step is: " << res.branches[input];
+    PLOG_DEBUG << "Next step is: " << nextStep;
     res = client.call<service::response>("getStepInfo", client::config::USER_ID,
                                          nextStep);
     PLOG_DEBUG << "Current step is: " << res.stepId;
     std::cout << res.speak << std::endl;
     if (res.type == RES_CLOSE || res.type == RES_ERROR) {
-      PLOG_ERROR << "Something wrong.";
       // 终止或发生错误
       goto end;
     }
@@ -124,6 +120,8 @@ std::string printBranches(std::map<std::string, std::string> branches) {
   std::string result;
   for (auto &branch : branches) {
     result += branch.first + "\n";
+    PLOG_DEBUG << "Branch: " << branch.first << " " << branch.second;
+    PLOG_DEBUG << branches.count(branch.first);
   }
   return result.substr(0, result.size() - 1);
 }

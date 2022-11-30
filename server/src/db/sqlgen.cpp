@@ -25,7 +25,8 @@ std::optional<json> getUser(int id) {
         reinterpret_cast<const char *>(sqlite3_column_text(stmt, 1)));
     user["$amount"] = sqlite3_column_int(stmt, 2);
     user["$credit"] = sqlite3_column_int(stmt, 3);
-    user["$data"] = sqlite3_column_int(stmt, 4);
+    user["$data"] = std::string(
+        reinterpret_cast<const char *>(sqlite3_column_text(stmt ,4)));
     return user;
   }
   return std::nullopt;

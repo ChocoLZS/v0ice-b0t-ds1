@@ -1,0 +1,3 @@
+# 测试speak命令中多余的空白行
+Step hello
+    Speak    "Hello world"

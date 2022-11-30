@@ -1,0 +1,5 @@
+# 测试Branch的参数识别
+Step hello
+    Speak "hello,world"
+    Listen 12 , 25
+    Branch "loop" ,  

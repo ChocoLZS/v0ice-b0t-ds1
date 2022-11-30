@@ -18,7 +18,7 @@ const std::string WHITESPACE = " \n\r\t\f\v";
 std::string &trim(std::string &s, const std::string &drop = WHITESPACE);
 
 /**
- * @brief Erace the whitespace in the string
+ * @brief Erace the whitespace and comment in the string
  * @param s The string to be processed
  * @return std::vector<std::string> The vector of the tokens
  */
@@ -33,7 +33,7 @@ std::vector<std::string> eraseWhitespace(std::string &s);
 std::vector<std::string> split(std::string s, std::string delimiter);
 }  // namespace str
 
-extern std::map<std::string, ActionType> action_mapping;
+extern std::map<std::string, int> action_mapping;
 namespace config {
 /**
  * @brief The helper function to parse the command line arguments

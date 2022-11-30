@@ -9,6 +9,7 @@
 #include <utils/logger.hpp>
 #include <utils/util.hpp>
 
+
 namespace parser {
 void ParseFile(std::string path, Script& script) {
   std::ifstream file(path);
@@ -18,7 +19,6 @@ void ParseFile(std::string path, Script& script) {
                              " ,please check your script file.");
   }
   PLOG_DEBUG << "Parsing file: \"" << path << "\" ...";
-
   // 解析行
   std::string line;
   while (std::getline(file, line)) {
@@ -43,12 +43,25 @@ void ParseFile(std::string path, Script& script) {
   std::map<StepId, Step> steps = script.getSteps();
   for (std::map<StepId, Step>::iterator it = steps.begin(); it != steps.end();
        it++) {
-    Step step = it->second;
+    Step step = script.getStep(it->first);
     if (step._default_ == "") {
-      it->second._default_ = script._default_;
+      step._default_ = script._default_;
     }
     if (step.silence == "") {
-      it->second.silence = script._default_;
+      step.silence = script._default_;
+    }
+    // 检查当前步骤所拥有的分支是否存在
+    if(steps.count(step.silence) == 0) {
+      throw std::runtime_error("The step \"" + step.stepName + "\" has a silence branch \"" + step.silence + "\" which is not defined.");
+    }
+    if(steps.count(step._default_) == 0) {
+      throw std::runtime_error("The step \"" + step.stepName + "\" has a default branch \"" + step._default_ + "\" which is not defined.");
+    }
+    for (std::map<Answer, StepId>::iterator it = step.branches.begin();
+         it != step.branches.end(); it++) {
+      if(steps.count(it->second) == 0) {
+        throw std::runtime_error("The step \"" + step.stepName + "\" has a branch \"" + it->second + "\" which is not defined.");
+      }
     }
   }
   file.close();
@@ -59,48 +72,41 @@ std::vector<std::string> ParseLine(std::string line) {
 }
 
 void ProcessTokens(std::vector<std::string> tokens, Script& script) {
+  PLOG_DEBUG << "Processing tokens ...";
   std::string command = tokens[0];
+  PLOG_DEBUG << "Command: " << command;
   try {
-    switch (util::action_mapping[command]) {
-      case ActionType::Step:
+    // 查看当前command
+    switch (util::action_mapping.count(command) > 0
+                ? util::action_mapping[command]
+                : -1) {
+      case (int)ActionType::Step:
+        stepValidator(tokens);
         ProcessStep(tokens[1], script);
         break;
-      case ActionType::Listen: {
-        // todo: error checking
-        std::vector<std::string> strs = util::str::split(tokens[1], ",");
-        if (strs.size() != 2) {
-          throw std::runtime_error("The number of timer is not correct.");
-        }
-        try {
-          int startTimer = std::stoi(strs[0]);
-          int endTimer = std::stoi(strs[1]);
-          if (startTimer > endTimer) {
-            throw std::runtime_error(
-                "The start timer is larger than the end timer.");
-          } else if (startTimer < 0 || endTimer < 0) {
-            throw std::runtime_error("The timer is less than 0.");
-          }
-          ProcessListen(startTimer, endTimer, script);
-        } catch (std::invalid_argument& err) {
-          throw std::runtime_error("The timer is not a number.");
-        }
+      case (int)ActionType::Listen: {
+        std::pair<int,int> timers = listenValidator(tokens);
+          ProcessListen(timers.first, timers.second, script);
         break;
       }
-      case ActionType::Branch: {
+      case (int)ActionType::Branch: {
+        branchValidator(tokens);
         ProcessBranch(tokens[1].substr(1, tokens[1].size() - 2), tokens[3],
                       script);
         break;
       }
-      case ActionType::Silence:
+      case (int)ActionType::Silence:
+        silenceValidator(tokens);
         ProcessSilence(tokens[1], script);
         break;
-      case ActionType::Speak:
+      case (int)ActionType::Speak:
         ProcessSpeak(tokens, 1, script);
         break;
-      case ActionType::Exit:
+      case (int)ActionType::Exit:
         ProcessExit(script);
         break;
-      case ActionType::Default:
+      case (int)ActionType::Default:
+        defaultValidator(tokens);
         ProcessDefault(tokens[1], script);
         break;
       default:
@@ -118,7 +124,7 @@ void ProcessStep(StepId stepName, Script& script) {
   }
   script.addStep(stepName);
   script.curStep = stepName;
-  // 保证最后一次的Step为默任Step
+  // 保证最后一次的Step为默认Step
   script._default_ = stepName;
 }
 
@@ -187,6 +193,49 @@ void ProcessDefault(StepId nextStepId, Script& script) {
 void ProcessExit(Script& script) {
   Step& step = script.getCurStep();
   step.setEndStep();
+}
+
+void stepValidator(std::vector<std::string> tokens) {
+  if(tokens.size() < 2) {
+    throw std::runtime_error("Invalid step definition.");
+  }
+}
+
+std::pair<int, int> listenValidator(std::vector<std::string> tokens) {
+  if (tokens.size() < 4) {
+          throw std::runtime_error("The number of timer is not correct.");
+  }
+  int startTimer, endTimer;
+  try {
+    startTimer = std::stoi(tokens[1]);
+    endTimer = std::stoi(tokens[3]);
+  }catch(std::invalid_argument& err) {
+    throw std::runtime_error("The timer is not a number.");
+  }
+  if(startTimer > endTimer) {
+          throw std::runtime_error(
+              "The start timer is larger than the end timer.");
+  }else if(startTimer < 0 || endTimer < 0) {
+          throw std::runtime_error("The timer is less than 0.");
+  }
+  return std::make_pair(startTimer, endTimer);
+}
+
+void branchValidator(std::vector<std::string> tokens) {
+  if (tokens.size() < 4) {
+          throw std::runtime_error("The number of tokens is not correct.");
+        }
+}
+
+void silenceValidator(std::vector<std::string> tokens) {
+        if (tokens.size() < 2) {
+          throw std::runtime_error("The number of tokens is not correct.");
+        }
+}
+void defaultValidator(std::vector<std::string> tokens) {
+        if (tokens.size() < 2) {
+          throw std::runtime_error("The number of tokens is not correct.");
+        }
 }
 
 }  // namespace parser

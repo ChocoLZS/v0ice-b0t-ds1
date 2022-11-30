@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(dsl VERSION 1.1)
+project(dsl VERSION 2.0)
 
 OPTION(TESTS "build the tests" OFF)
 
-set(SERVER_VERSION_MAJOR 1)
-set(SERVER_VERSION_MINOR 1)
+set(SERVER_VERSION_MAJOR 2)
+set(SERVER_VERSION_MINOR 0)
 
-set(CLIENT_VERSION_MAJOR 1)
-set(CLIENT_VERSION_MINOR 1)
+set(CLIENT_VERSION_MAJOR 2)
+set(CLIENT_VERSION_MINOR 0)
 
 configure_file(DslConfig.h.in DslConfig.h)
 

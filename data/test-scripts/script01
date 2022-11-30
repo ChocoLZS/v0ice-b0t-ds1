@@ -1,0 +1,63 @@
+# 正常可执行脚本，测试所有数据
+
+Step main   # 入口步骤
+    Speak "欢迎，" + $name + "，进入dsl测试系统"
+    Branch "查询账单" , searchAmount
+    Branch "查询话费" , searchCredit
+    Branch "查询信息" , searchData
+    Branch "反馈" , feedback
+    Branch "退出" , exit
+    Listen 1 , 10
+    Silence silence
+    Default default
+
+Step bill
+    Speak $name + ",您好，您的账单是：" + $amount
+    Branch "查询账单" , searchAmount
+    Branch "查询话费" , searchCredit
+    Branch "查询信息" , searchData
+    Branch "反馈" , feedback
+    Branch "退出" , exit
+    Listen 10 , 30
+    Silence silence
+    Default default
+    
+Step searchAmount
+    Speak "您好，您的账单是：" + $amount
+    Exit
+Step searchCredit
+    Speak "您好，您的话费是：" + $credit
+    Exit
+Step searchData
+    Speak "您好，您的信息是：" + $data + "，" + "还有什么需要查询的吗？"
+    Branch "查询账单" , searchAmount
+    Branch "查询话费" , searchCredit
+    Branch "查询信息" , searchData
+    Branch "反馈" , feedback
+    Branch "退出" , exit
+    Listen 10 , 30
+    Silence silence
+    Default default
+Step feedback
+    Speak "请问您有什么问题需要反馈吗？"
+    Listen 10 , 30
+    Silence exit
+    Default exit
+Step exit
+    Exit
+Step silence
+    Speak "您好，我没听清楚您说的是什么？"
+    Branch "查询账单" , searchAmount
+    Branch "查询话费" , searchCredit
+    Branch "查询信息" , searchData
+    Branch "反馈" , feedback
+    Branch "退出" , exit
+    Default default
+Step default
+    Speak "未查询到您需要的内容，您可以尝试以下操作："
+    Branch "查询账单" , searchAmount
+    Branch "查询话费" , searchCredit
+    Branch "查询信息" , searchData
+    Branch "反馈" , feedback
+    Branch "退出" , exit
+

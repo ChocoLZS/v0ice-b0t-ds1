@@ -4,11 +4,11 @@
 /**
  * @brief The mapping of the action to the action type
  */
-std::map<std::string, ActionType> util::action_mapping = {
-    {"Step", ActionType::Step},      {"Listen", ActionType::Listen},
-    {"Branch", ActionType::Branch},  {"Silence", ActionType::Silence},
-    {"Speak", ActionType::Speak},    {"Exit", ActionType::Exit},
-    {"Default", ActionType::Default}};
+std::map<std::string, int> util::action_mapping = {
+    {"Step", (int)ActionType::Step},      {"Listen", (int)ActionType::Listen},
+    {"Branch", (int)ActionType::Branch},  {"Silence", (int)ActionType::Silence},
+    {"Speak", (int)ActionType::Speak},    {"Exit", (int)ActionType::Exit},
+    {"Default", (int)ActionType::Default}};
 
 /**
  * @brief The global script AST

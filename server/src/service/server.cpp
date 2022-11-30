@@ -27,6 +27,7 @@ void constructResponse(service::response &res, Step step,
   res.branches = step.branches;
   res.silence = step.silence;
 }
+
 service::response hello(rpc_conn conn, int id) {
   PLOG_INFO << "Received a request from client: userId:" << id << "\taddress: "
             << static_cast<std::shared_ptr<connection>>(conn)->remote_address();
@@ -38,6 +39,7 @@ service::response hello(rpc_conn conn, int id) {
     PLOG_ERROR << e.what();
     return res;
   }
+
   Step entry = script.getStep(script.entry);
   constructResponse(res, entry, userInfo);
   if (entry.listen.beginTimer != -1) {
@@ -61,11 +63,10 @@ service::response getStepInfo(rpc_conn conn, int id, std::string stepId) {
     PLOG_ERROR << e.what();
     return res;
   }
+
   PLOG_DEBUG << "Current step: " << stepId;
   Step step = script.getStep(stepId);
-
   constructResponse(res, step, userInfo);
-
   res.type = step.isEndStep ? RES_CLOSE : RES_INFO;
   if (step.listen.beginTimer != -1) {
     res.timers.push_back(step.listen.beginTimer);
@@ -85,12 +86,11 @@ void serverStart() {
     // register the rpc functions
     server.register_handler("hello", service::hello);
     server.register_handler("getStepInfo", service::getStepInfo);
-
-    server.set_network_err_callback(
-        [](std::shared_ptr<connection> conn, std::string reason) {
-          PLOG_ERROR << "remote client address: " << conn->remote_address()
-                     << " networking error, reason: " << reason;
-        });
+    // server.set_network_err_callback(
+    //     [](std::shared_ptr<connection> conn, std::string reason) {
+    //       PLOG_ERROR << "remote client address: " << conn->remote_address()
+    //                  << " networking error, reason: " << reason;
+    //     });
 
     // start the server
     server.run();

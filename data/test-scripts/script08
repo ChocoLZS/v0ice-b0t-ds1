@@ -1,0 +1,8 @@
+Step hello
+    Speak "hello,world"
+    Listen 12 , 25
+    Branch "loop" ,  hello
+    Silence __default
+Step __default
+    Speak "退出分支"
+    Default __default
