@@ -6,34 +6,34 @@ extern Script script;
 
 namespace interpreter {
 namespace executor {
-void Execute(int id) {
-  std::optional<json> userInfo;
-  try {
-    userInfo = sqlgen::getUser(id);
-  } catch (std::runtime_error e) {
-    std::cerr << e.what() << std::endl;
-    throw e;
-  }
-  StepId curStepId;
-  Step curStep;
-  curStepId = script.entry;
-  do {
-    curStep = script.getStep(curStepId);
-    // Speak
-    std::cout << generateSpeak(curStep, userInfo) << std::endl;
-    if (curStep.isEndStep) {
-      break;
-    }
-    // Listen
-    std::string input;
-    std::cin >> input;
-    // Branch
-    curStepId = curStep.getBranch(input);
-    if (curStepId == "") {
-      curStepId = curStep._default_;
-    }
-  } while (true);
-}
+// void Execute(int id) {
+//   std::optional<json> userInfo;
+//   try {
+//     userInfo = sqlgen::getUser(id);
+//   } catch (std::runtime_error e) {
+//     std::cerr << e.what() << std::endl;
+//     throw e;
+//   }
+//   StepId curStepId;
+//   Step curStep;
+//   curStepId = script.entry;
+//   do {
+//     curStep = script.getStep(curStepId);
+//     // Speak
+//     std::cout << generateSpeak(curStep, userInfo) << std::endl;
+//     if (curStep.isEndStep) {
+//       break;
+//     }
+//     // Listen
+//     std::string input;
+//     std::cin >> input;
+//     // Branch
+//     curStepId = curStep.getBranch(input);
+//     if (curStepId == "") {
+//       curStepId = curStep._default_;
+//     }
+//   } while (true);
+// }
 
 std::string generateSpeak(Step step, std::optional<json> userInfo) {
   std::string speak = "";

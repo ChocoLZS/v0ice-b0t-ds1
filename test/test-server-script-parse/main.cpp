@@ -1,9 +1,9 @@
-#include <iostream>
-#include <filesystem>
-#include <parser/parser.hpp>
-#include <string>
-#include <set>
 #include <algorithm>
+#include <filesystem>
+#include <iostream>
+#include <parser/parser.hpp>
+#include <set>
+#include <string>
 
 int main() {
   std::string curPath = std::filesystem::current_path();
@@ -17,8 +17,8 @@ int main() {
     files.push_back(entry.path());
   }
   std::sort(files.begin(), files.end());
-  for(auto file : files) {
-      Script script;
+  for (auto file : files) {
+    Script script;
     try {
       std::cout << file << std::endl;
       parser::ParseFile(file, script);

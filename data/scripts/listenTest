@@ -1,0 +1,56 @@
+# 测试listen
+# 打字王，在限时内打完所有字符便可通关
+Step welcome
+    Speak "欢迎来到这个打字的示例程序"
+    Branch "开始游戏" , start
+    Branch "退出" , bye
+
+Step start
+    Speak "请在3秒内打完所有字符"
+    Branch "一" , step1
+    Listen 0 , 3
+    Silence fail
+    Default fail
+
+Step step1
+    Speak "请在3秒内打完所有字符"
+    Branch "二" , step2
+    Listen 0 , 3
+    Silence fail
+    Default fail
+
+Step step2
+    Speak "请在3秒内打完所有字符"
+    Branch "三" , step3
+    Listen 0 , 3
+    Silence fail
+    Default fail
+
+Step step3
+    Speak "请在3秒内打完所有字符"
+    Branch "四" , success
+    Listen 0 , 3
+    Silence fail
+    Default fail
+
+Step fail
+    Speak "失败了"
+    Branch "重新开始" , start
+    Branch "退出" , bye
+    Default default
+
+Step success
+    Speak "成功了"
+    Branch "重新开始" , start
+    Branch "退出" , bye
+    Default default
+
+Step bye
+    Speak "再见"
+    Exit
+
+Step default
+    Speak "我不知道你在说什么"
+    Branch "开始游戏" , start
+    Branch "退出" , bye
+    Default default

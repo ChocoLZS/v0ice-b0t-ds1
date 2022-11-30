@@ -1,0 +1,22 @@
+# 纯聊天，没有查询信息
+Step welcome
+    Speak "你好，欢迎来到纯聊天程序，请问有什么可以帮助您的吗？"
+    Branch "你好" , welcome
+    Branch "吃了吗" , eat
+Step eat
+    Speak "没呢，你吃了啥"
+    Default afterEat
+Step afterEat
+    Speak "我也想吃"
+    Branch "你好" , welcome
+    Branch "吃了吗" , eat
+    Branch "再见" , bye
+Step bye
+    Speak "再见"
+    Exit
+Step notFound
+    Speak "我不知道你在说什么"
+    Speak "！嗨嗨嗨"
+    Branch "你好" , welcome
+    Branch "再见" , bye
+    Default welcome

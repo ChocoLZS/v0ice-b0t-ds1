@@ -13,7 +13,23 @@
 ## 文件目录
 
 ```text
-
+.
+├── CMakeLists.txt				# cmake脚本
+├── README.md
+├── include
+│   ├── service
+│   │   └── client.hpp			# 客户端头文件
+│   └── utils
+│       ├── logger.hpp			# 日志头文件
+│       └── util.hpp			# 工具函数
+└── src
+    ├── global.cpp				# 初始全局变量
+    ├── main.cpp				# 主程序
+    ├── service
+    │   └── client.cpp			# rpc客户端
+    └── utils
+        ├── config.cpp			# 初始化命令行提示和全局变量
+        └── logger.cpp			# 初始化logger和logger配置
 ```
 
 ## Client端函数逻辑
@@ -43,19 +59,15 @@
 
 ```c++
 bool read_input(int beginTimer, int endTimer) {
-    std::cout << ">> " << std::flush;
-    struct pollfd _poll = {STDIN_FILENO, POLLIN | POLLPRI};
-    std::string input;
-    if (poll(&_poll, 1, (beginTimer+endTimer) * 1000)) {
-      std::cin >> input;
-    } else {
-      std::cout << "Timeout" << std::endl;
-      fflush(stdin);
-      PLOG_DEBUG << "Read user input with timeout";
-      return true;
-    }
-    PLOG_DEBUG << "Input: " << input;
-    return false;
+  std::cout << ">> " << std::flush;
+  struct pollfd _poll = {STDIN_FILENO, POLLIN | POLLPRI};
+  if (poll(&_poll, 1, (beginTimer + endTimer) * 1000)) {
+    std::cin >> input;
+  } else {
+    PLOG_DEBUG << "Read user input with timeout";
+    return true;
+  }
+  return false;
 }
 ```
 

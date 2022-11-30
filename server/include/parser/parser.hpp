@@ -87,34 +87,34 @@ void ProcessExit(Script &script);
 void ProcessDefault(StepId nextStepId, Script &script);
 
 /**
-* @brief Check step tokens are valid.
-* @param tokens The tokens to be checked
-*/
+ * @brief Check step tokens are valid.
+ * @param tokens The tokens to be checked
+ */
 void stepValidator(std::vector<std::string> tokens);
 
 /**
-* @brief Check listen tokens are valid.
-* @param tokens The tokens to be checked
-* @return pair<int, int> The begin timer and end timer, if the tokens are valid
-*/
-std::pair<int,int> listenValidator(std::vector<std::string> tokens);
+ * @brief Check listen tokens are valid.
+ * @param tokens The tokens to be checked
+ * @return pair<int, int> The begin timer and end timer, if the tokens are valid
+ */
+std::pair<int, int> listenValidator(std::vector<std::string> tokens);
 
 /**
-* @brief Check branch tokens are valid.
-* @param tokens The tokens to be checked
-*/
+ * @brief Check branch tokens are valid.
+ * @param tokens The tokens to be checked
+ */
 void branchValidator(std::vector<std::string> tokens);
 
 /**
-* @brief Check silence tokens are valid.
-* @param tokens The tokens to be checked
-*/
+ * @brief Check silence tokens are valid.
+ * @param tokens The tokens to be checked
+ */
 void silenceValidator(std::vector<std::string> tokens);
 
 /**
-* @brief Check default tokens are valid.
-* @param tokens The tokens to be checked
-*/
+ * @brief Check default tokens are valid.
+ * @param tokens The tokens to be checked
+ */
 void defaultValidator(std::vector<std::string> tokens);
 
 }  // namespace parser

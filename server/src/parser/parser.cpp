@@ -9,7 +9,6 @@
 #include <utils/logger.hpp>
 #include <utils/util.hpp>
 
-
 namespace parser {
 void ParseFile(std::string path, Script& script) {
   std::ifstream file(path);
@@ -51,16 +50,22 @@ void ParseFile(std::string path, Script& script) {
       step.silence = script._default_;
     }
     // 检查当前步骤所拥有的分支是否存在
-    if(steps.count(step.silence) == 0) {
-      throw std::runtime_error("The step \"" + step.stepName + "\" has a silence branch \"" + step.silence + "\" which is not defined.");
+    if (steps.count(step.silence) == 0) {
+      throw std::runtime_error("The step \"" + step.stepName +
+                               "\" has a silence branch \"" + step.silence +
+                               "\" which is not defined.");
     }
-    if(steps.count(step._default_) == 0) {
-      throw std::runtime_error("The step \"" + step.stepName + "\" has a default branch \"" + step._default_ + "\" which is not defined.");
+    if (steps.count(step._default_) == 0) {
+      throw std::runtime_error("The step \"" + step.stepName +
+                               "\" has a default branch \"" + step._default_ +
+                               "\" which is not defined.");
     }
     for (std::map<Answer, StepId>::iterator it = step.branches.begin();
          it != step.branches.end(); it++) {
-      if(steps.count(it->second) == 0) {
-        throw std::runtime_error("The step \"" + step.stepName + "\" has a branch \"" + it->second + "\" which is not defined.");
+      if (steps.count(it->second) == 0) {
+        throw std::runtime_error("The step \"" + step.stepName +
+                                 "\" has a branch \"" + it->second +
+                                 "\" which is not defined.");
       }
     }
   }
@@ -85,8 +90,8 @@ void ProcessTokens(std::vector<std::string> tokens, Script& script) {
         ProcessStep(tokens[1], script);
         break;
       case (int)ActionType::Listen: {
-        std::pair<int,int> timers = listenValidator(tokens);
-          ProcessListen(timers.first, timers.second, script);
+        std::pair<int, int> timers = listenValidator(tokens);
+        ProcessListen(timers.first, timers.second, script);
         break;
       }
       case (int)ActionType::Branch: {
@@ -154,6 +159,7 @@ Expression ProcessExpression(std::vector<std::string> tokens, int start) {
     }
     throw std::runtime_error("Invalid expression: " + str);
   }
+  expression.addTerm("\n");
   return expression;
 }
 
@@ -162,7 +168,7 @@ void ProcessSpeak(std::vector<std::string> tokens, int start, Script& script) {
   std::string expression = "";
   try {
     Expression exp = ProcessExpression(tokens, start);
-    step.setExpression(exp);
+    step.addExpression(exp);
   } catch (std::runtime_error& err) {
     throw std::runtime_error(err.what());
   }
@@ -186,7 +192,6 @@ void ProcessSilence(StepId nextStepId, Script& script) {
 
 void ProcessDefault(StepId nextStepId, Script& script) {
   Step& step = script.getCurStep();
-  script._default_ = nextStepId;
   step.setDefault(nextStepId);
 }
 
@@ -196,46 +201,45 @@ void ProcessExit(Script& script) {
 }
 
 void stepValidator(std::vector<std::string> tokens) {
-  if(tokens.size() < 2) {
+  if (tokens.size() < 2) {
     throw std::runtime_error("Invalid step definition.");
   }
 }
 
 std::pair<int, int> listenValidator(std::vector<std::string> tokens) {
   if (tokens.size() < 4) {
-          throw std::runtime_error("The number of timer is not correct.");
+    throw std::runtime_error("The number of timer is not correct.");
   }
   int startTimer, endTimer;
   try {
     startTimer = std::stoi(tokens[1]);
     endTimer = std::stoi(tokens[3]);
-  }catch(std::invalid_argument& err) {
+  } catch (std::invalid_argument& err) {
     throw std::runtime_error("The timer is not a number.");
   }
-  if(startTimer > endTimer) {
-          throw std::runtime_error(
-              "The start timer is larger than the end timer.");
-  }else if(startTimer < 0 || endTimer < 0) {
-          throw std::runtime_error("The timer is less than 0.");
+  if (startTimer > endTimer) {
+    throw std::runtime_error("The start timer is larger than the end timer.");
+  } else if (startTimer < 0 || endTimer < 0) {
+    throw std::runtime_error("The timer is less than 0.");
   }
   return std::make_pair(startTimer, endTimer);
 }
 
 void branchValidator(std::vector<std::string> tokens) {
   if (tokens.size() < 4) {
-          throw std::runtime_error("The number of tokens is not correct.");
-        }
+    throw std::runtime_error("The number of tokens is not correct.");
+  }
 }
 
 void silenceValidator(std::vector<std::string> tokens) {
-        if (tokens.size() < 2) {
-          throw std::runtime_error("The number of tokens is not correct.");
-        }
+  if (tokens.size() < 2) {
+    throw std::runtime_error("The number of tokens is not correct.");
+  }
 }
 void defaultValidator(std::vector<std::string> tokens) {
-        if (tokens.size() < 2) {
-          throw std::runtime_error("The number of tokens is not correct.");
-        }
+  if (tokens.size() < 2) {
+    throw std::runtime_error("The number of tokens is not correct.");
+  }
 }
 
 }  // namespace parser

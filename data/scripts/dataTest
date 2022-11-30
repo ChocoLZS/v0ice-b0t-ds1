@@ -1,0 +1,19 @@
+Step welcome
+    Speak "拼接所有信息"
+    Branch "开始" , loop
+    Default loop
+
+Step loop
+    Speak "|" + "用户:" + $id + "|" +  "名称:" + $name + "|" +  "账单:" + $amount  + "|" + "话费:" + $credit + "|" + "信息:" + $data
+    Branch "循环" , loop
+    Default default
+
+Step end
+    Speak "结束"
+    Exit
+
+Step default
+    Speak "当前可退出循环"
+    Branch "结束" , end
+    Branch "循环" , loop
+    Default default

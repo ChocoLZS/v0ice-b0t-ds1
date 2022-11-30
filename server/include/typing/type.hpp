@@ -22,11 +22,11 @@ enum class ActionType { Step, Listen, Branch, Silence, Speak, Exit, Default };
  */
 class Item {
  public:
-  Item(uint8_t type, std::string val) {
+  Item(int type, std::string val) {
     this->type = type;
     this->val = val;
   }
-  uint8_t type;
+  int type;
   std::string val;
 };
 
@@ -84,7 +84,9 @@ class Step {
     this->_default_ = "";
     this->isEndStep = false;
   }
-  void setExpression(Expression expression) { this->speak = expression; }
+  void addExpression(Expression expression) {
+    this->speak.items.insert(this->speak.items.end(), expression.items.begin()
+                                                      ,expression.items.end()); }
   void setListen(Listen listen) { this->listen = listen; }
   void addBranch(Answer answer, StepId nextStepId) {
     this->branches[answer] = nextStepId;
@@ -129,5 +131,4 @@ class Script {
 
  private:
   std::map<StepId, Step> steps;
-  std::vector<VarName> vars;
 };

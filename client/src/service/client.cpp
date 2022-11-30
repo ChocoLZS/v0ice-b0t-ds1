@@ -8,7 +8,6 @@
 #include <utils/logger.hpp>
 #include <utils/util.hpp>
 
-
 using namespace rest_rpc;
 using namespace rest_rpc::rpc_service;
 
@@ -90,7 +89,7 @@ void clientStart() {
       // 超时，跳转silence分支
       nextStep = res.silence;
     } else {
-      if (res.branches.find(input) != res.branches.end()) {
+      if (res.branches.count(input) != 0) {
         // 输入正确，跳转对应分支
         nextStep = res.branches[input];
       } else {
@@ -98,7 +97,6 @@ void clientStart() {
         nextStep = res._default_;
       }
     }
-    PLOG_DEBUG << "Next step is: " << res.branches[input];
     PLOG_DEBUG << "Next step is: " << nextStep;
     res = client.call<service::response>("getStepInfo", client::config::USER_ID,
                                          nextStep);
@@ -118,6 +116,7 @@ end:
 }
 std::string printBranches(std::map<std::string, std::string> branches) {
   std::string result;
+  std::cout << "------------------------" << std::endl;
   for (auto &branch : branches) {
     result += branch.first + "\n";
     PLOG_DEBUG << "Branch: " << branch.first << " " << branch.second;
