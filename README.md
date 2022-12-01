@@ -14,6 +14,7 @@
          * [数据库结构](#数据库结构)
       * [服务端详情](#服务端详情)
       * [客户端详情](#客户端详情)
+      * [文档](#文档)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
 <!-- Added by: chocoie, at: Sun Nov 27 12:53:17 CST 2022 -->
@@ -186,8 +187,12 @@ create table userinfo(
 
 ## 服务端详情
 
-可进入[Server](https://github.com/ChocoLZS/voice-bot-dsl/tree/main/server)目录查看README.md
+可进入[server](https://github.com/ChocoLZS/voice-bot-dsl/tree/main/server)目录查看README.md
 
 ## 客户端详情
 
-可进入[Client](https://github.com/ChocoLZS/voice-bot-dsl/tree/main/client)目录查看README.md
+可进入[client](https://github.com/ChocoLZS/voice-bot-dsl/tree/main/client)目录查看README.md
+
+## 文档
+
+可进入[doc](https://github.com/ChocoLZS/voice-bot-dsl/tree/main/doc)目录查看对应文档
