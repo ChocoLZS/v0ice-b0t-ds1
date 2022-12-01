@@ -59,7 +59,10 @@ void clientStart() {
     PLOG_ERROR << "Connect failed";
     return;
   }
-
+  PLOG_DEBUG << "Client connect server "
+             << client::config::SERVER_ADDRESS
+             << ":"
+            << std::to_string(client::config::PORT);
   // 自动向服务器发送初始连接请求
   service::response res =
       client.call<service::response>("hello", client::config::USER_ID);

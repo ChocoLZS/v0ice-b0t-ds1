@@ -91,7 +91,7 @@ void serverStart() {
     //       PLOG_ERROR << "remote client address: " << conn->remote_address()
     //                  << " networking error, reason: " << reason;
     //     });
-
+    PLOG_DEBUG << "Server listen port on " + std::to_string(server::config::PORT) ;
     // start the server
     server.run();
   } catch (std::exception &e) {
